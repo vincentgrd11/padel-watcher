@@ -26,12 +26,18 @@ STATE_FILE = Path(__file__).with_name("state.json")
 API = "https://flow.onl/api/activities/venue/{venue}/activity/padel/v2/times?date={d}"
 BOOK_URL = "https://sportsandleisureroyalparks.bookings.flow.onl/location/{venue}/padel/{d}/by-time"
 LONDON = ZoneInfo("Europe/London")
-UA = "Mozilla/5.0 (personal padel availability watcher)"
+SITE = "https://sportsandleisureroyalparks.bookings.flow.onl"
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+    "Accept": "application/json",
+    "Origin": SITE,
+    "Referer": SITE + "/",
+}
 
 
 def fetch_slots(venue, d):
     req = urllib.request.Request(API.format(venue=venue, d=d.isoformat()),
-                                 headers={"User-Agent": UA, "Accept": "application/json"})
+                                 headers=HEADERS)
     with urllib.request.urlopen(req, timeout=20) as r:
         return json.load(r).get("data", []) or []
 
@@ -43,12 +49,13 @@ def main():
     except (FileNotFoundError, json.JSONDecodeError):
         previous = set()
 
-    avail, failed = {}, []
+    avail, failed, checked = {}, [], 0
     for i in range(DAYS_AHEAD):
         d = now.date() + timedelta(days=i)
         if d.weekday() not in WATCH_WEEKDAYS:
             continue
         for venue, name in VENUES.items():
+            checked += 1
             try:
                 slots = fetch_slots(venue, d)
             except Exception as e:
@@ -90,6 +97,9 @@ def main():
             print("NTFY_TOPIC not set - no push sent", file=sys.stderr)
 
     STATE_FILE.write_text(json.dumps(sorted(set(avail) | keep), indent=1) + "\n")
+
+    if checked and len(failed) == checked:
+        sys.exit("ERROR: every request to the booking site failed")
 
 
 if __name__ == "__main__":
