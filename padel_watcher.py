@@ -34,12 +34,11 @@ VENUES = {
 }
 
 # Weekdays to watch: Monday=0 ... Sunday=6
-WATCH_WEEKDAYS = {0, 1, 2, 3}  # Mon–Thu
+WATCH_WEEKDAYS = {5, 6}  # Saturday & Sunday
 
 # Slot START times to watch (24h, "HH:MM"). 60-min slots.
-WATCH_START_TIMES = {
-    "07:00", "08:00",           # mornings (07:00–09:00)
-    "18:00", "19:00", "20:00",  # evenings (18:00–21:00)
+# None = any time of day. To narrow, e.g.: {"09:00", "10:00", "11:00"}
+WATCH_START_TIMES = None
 }
 
 DAYS_AHEAD = 8          # booking window is 7 days ahead; 8 covers the 7am release
@@ -89,7 +88,9 @@ def current_availability(now: datetime) -> tuple[dict, list[str]]:
                 continue
             for s in slots:
                 start = (s.get("starts_at") or {}).get("format_24_hour")
-                if start not in WATCH_START_TIMES or not is_bookable(s):
+                 if WATCH_START_TIMES is not None and start not in WATCH_START_TIMES:
+                    continue
+                if not is_bookable(s):
                     continue
                 # Skip slots that have already started
                 ts = s.get("timestamp")
