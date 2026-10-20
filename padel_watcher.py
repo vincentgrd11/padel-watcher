@@ -39,7 +39,6 @@ WATCH_WEEKDAYS = {5, 6}  # Saturday & Sunday
 # Slot START times to watch (24h, "HH:MM"). 60-min slots.
 # None = any time of day. To narrow, e.g.: {"09:00", "10:00", "11:00"}
 WATCH_START_TIMES = None
-}
 
 DAYS_AHEAD = 8          # booking window is 7 days ahead; 8 covers the 7am release
 POLL_MINUTES = 3        # only used in --loop mode
