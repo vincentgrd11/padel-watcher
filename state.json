@@ -1,9 +1,12 @@
 [
  "hyde-park-courts|2026-11-28|07:00",
  "hyde-park-courts|2026-11-28|18:00",
+ "hyde-park-courts|2026-11-28|19:00",
  "hyde-park-courts|2026-11-28|20:00",
  "hyde-park-courts|2026-11-29|07:00",
  "the-regents-park-courts|2026-11-28|07:00",
+ "the-regents-park-courts|2026-11-28|13:00",
+ "the-regents-park-courts|2026-11-28|14:00",
  "the-regents-park-courts|2026-11-28|16:00",
  "the-regents-park-courts|2026-11-28|17:00",
  "the-regents-park-courts|2026-11-28|18:00",
@@ -11,5 +14,6 @@
  "the-regents-park-courts|2026-11-28|20:00",
  "the-regents-park-courts|2026-11-29|07:00",
  "the-regents-park-courts|2026-11-29|08:00",
+ "the-regents-park-courts|2026-11-29|17:00",
  "the-regents-park-courts|2026-11-29|20:00"
 ]
